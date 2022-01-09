@@ -1,0 +1,24 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /demo
+spring:
+  security:
+    user:
+      name: admin
+      password: admin
+management:
+  endpoint:
+    health:
+      show-details: always
+      show-components: always
+    metrics:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include:
+        - "*"
+  info:
+    git:
+      enabled: true
