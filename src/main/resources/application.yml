@@ -19,6 +19,9 @@ management:
       exposure:
         include:
         - "*"
-  info:
-    git:
-      enabled: true
+mn:
+  common:
+    web:
+      core:
+        security:
+          enabled: true

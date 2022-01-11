@@ -1,0 +1,58 @@
+//Repositories to draw libraries from
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven {
+    	name 'nexus-repo'
+    	url 'https://localhost:9094/nexus/repository/mn_maven'
+    }
+}
+
+jar {
+    manifest {
+        attributes(
+                'Built-With': "Gradle - ${project.getGradle().getGradleVersion()}",
+                'Created-By': System.properties['java.version'] + ' (' + System.properties['java.vendor'] + ')',
+                'Name': project.name,
+                'Version': project.version
+        )
+    }
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+        }
+    }
+    repositories {
+        maven {
+            name 'nexus-repo'
+            if (project.version.endsWith('-SNAPSHOT')) {
+                url "${project.repositories['nexus-repo'].url}_snapshots"
+            } else {
+                url "${project.repositories['nexus-repo'].url}_releases"
+            }
+            project.ext.set('publishRepoURL', url)
+        }
+    }
+}
+
+tasks.withType(PublishToMavenRepository) {
+    doLast {
+        def groupPath = publication.groupId.replaceAll('\\.', '/')
+
+        def artefactVersion = tasks.jar.archiveFileName.get()
+        if (publication.version.endsWith('-SNAPSHOT')) {
+            def metadata_file_path = "${buildDir}/tmp/${name}"
+            def metadata = new groovy.util.XmlSlurper().parseText(new File("${metadata_file_path}/snapshot-maven-metadata.xml").text)
+
+            artefactVersion = "${publication.artifactId}-${publication.version.replaceAll('-SNAPSHOT', '')}-${metadata.versioning.snapshot.timestamp}-${metadata.versioning.snapshot.buildNumber}.jar"
+        }
+
+        def artefactNexusURL = "${repository.url}/${groupPath}/${publication.artifactId}/${publication.version}/${artefactVersion}"
+
+        println "INFO: Uploaded an artefact ${artefactVersion} to Nexus"
+        println "INFO: Artefact URL ${artefactNexusURL}"
+    }
+}

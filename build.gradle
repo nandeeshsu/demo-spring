@@ -2,12 +2,14 @@ plugins {
 	id 'org.springframework.boot' version '2.6.2'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
-	id "com.gorylenko.gradle-git-properties" version "1.4.6"
+	id 'com.gorylenko.gradle-git-properties' version '1.4.6'
 }
 
 group = 'com.mn.example'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
+
+apply from: "$projectDir/gradle/script/libraries.gradle"
 
 configurations {
 	compileOnly {
@@ -16,19 +18,23 @@ configurations {
 }
 
 repositories {
+	mavenLocal()
 	mavenCentral()
 }
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
-	implementation 'org.springframework.boot:spring-boot-starter-security'
+	//implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	
+	implementation libraries.mn.common_web_core
+	
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.springframework.security:spring-security-test'
+	//testImplementation 'org.springframework.security:spring-security-test'
 }
 
 test {

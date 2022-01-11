@@ -1,0 +1,26 @@
+ext {
+	versions = [:]
+	libraries = [:]
+}
+
+versions = [
+	spring_boot    : '2.6.2',
+	common_modules : '0.0.1-SNAPSHOT'
+]
+
+libraries.spring = [
+	
+	spring_boot_bom                   : "org.springframework.boot:spring-boot-dependencies:${versions.spring_boot}",
+	spring_boot_autoconfig            : 'org.springframework.boot:spring-boot-autoconfigure-processor',
+    spring_boot_config                : 'org.springframework.boot:spring-boot-configuration-processor',
+    spring_boot_web                   : 'org.springframework.boot:spring-boot-starter-web',
+	//spring_boot_security              : 'org.springframework.boot:spring-boot-starter-security'
+]
+
+libraries.external = [
+	lombok : 'org.projectlombok:lombok'
+]
+
+libraries.mn = [
+	common_web_core : "com.mn.example:common-web-core:${versions.common_modules}"
+]
