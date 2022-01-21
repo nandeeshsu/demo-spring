@@ -24,7 +24,15 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	
+	//This same spring boot security depedency is also included in the common-module's common-web-core module
+	//There "implementation" is used which will be included only at runtime for this "demo-spring" project,
+	//however it will be not be availabe for the complile time classpath. If you tried to import any
+	//spring security classes, they will not be available. if needed here, either add the spring security library
+	//dependency here or use "api" configuration in common-web-core so that will be available in the compile time and runtime as well
+	
 	//implementation 'org.springframework.boot:spring-boot-starter-security'
+	
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	
 	implementation libraries.mn.common_web_core
